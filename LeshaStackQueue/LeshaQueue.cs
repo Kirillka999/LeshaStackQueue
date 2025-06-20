@@ -60,8 +60,8 @@ public class LeshaQueue
             Array.Resize(ref _internalArray, 0);
             throw new InvalidOperationException("Can remove elements: queue is empty");
         }
-
-        // if (_tailCount - _headCount == _internalArray.Length / 2)
+        
+        // if (_internalArray.Length % (_tailCount + 1 - _headCount) == 0)
         // {
         //     Capacity = _tailCount - _headCount;
         //     var newArray = new int[Capacity];

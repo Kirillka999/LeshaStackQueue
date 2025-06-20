@@ -46,7 +46,7 @@ class Program
         queue1.Dequeue();
         queue1.Peek();
         queue1.Dequeue();
-        queue1.Peek();
+        //queue1.Peek();
         
     }
 }

@@ -46,6 +46,12 @@ class Program
         queue1.Dequeue();
         queue1.Peek();
         queue1.Dequeue();
+        
+        queue1.Enqueue(1);
+        queue1.Enqueue(2);
+        queue1.Enqueue(3);
+        queue1.Enqueue(4);
+        queue1.Enqueue(5);
         //queue1.Peek();
         
     }

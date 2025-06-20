@@ -61,18 +61,19 @@ public class LeshaQueue
             throw new InvalidOperationException("Can remove elements: queue is empty");
         }
         
-        // if (_internalArray.Length % (_tailCount + 1 - _headCount) == 0)
-        // {
-        //     Capacity = _tailCount - _headCount;
-        //     var newArray = new int[Capacity];
-        //     Array.ConstrainedCopy(_internalArray, _headCount, newArray, 0, _tailCount - 1);
-        //     _internalArray = newArray;
-        //     _headCount = 0;
-        //     _tailCount = _internalArray.Length - 1;
-        // }
-        
         var tempElement = Peek();
         _headCount++;
+        
+        if (_tailCount != _headCount && _internalArray.Length % (_tailCount - _headCount) == 0)
+        {
+            Capacity = _tailCount - _headCount;
+            var newArray = new int[Capacity];
+            Array.ConstrainedCopy(_internalArray, _headCount, newArray, 0, _tailCount - _headCount);
+            _internalArray = newArray;
+            _headCount = 0;
+            _tailCount = _internalArray.Length;
+        }
+        
         return tempElement;
     }
 }

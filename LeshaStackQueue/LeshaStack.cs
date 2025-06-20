@@ -5,18 +5,6 @@ public class LeshaStack
     private int[] _internalArray;
     private int _count;
     public int Capacity { get; private set; }
-
-    public int this[int index]
-    {
-        get
-        {
-            if (index > _count - 1)
-            {
-                throw new IndexOutOfRangeException();
-            }
-            return _internalArray[index];
-        }
-    }
     
     public LeshaStack()
     {
@@ -26,56 +14,56 @@ public class LeshaStack
 
     public LeshaStack(int capacity)
     {
-        OutOfRangeChecker(capacity);
+        if (capacity < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity must be greater than or equal to 0");
+        }
         
-        Capacity = capacity;
+        Capacity = capacity == 0 ? 1 : capacity;
         _internalArray = new int[Capacity];
     }
 
-    public void AddElement(int element)
+    public void Push(int element)
     {
         if (_internalArray.Length == _count)
         {
-            Capacity = _internalArray.Length * 2;
+            if (Capacity == 0)
+            {
+                Capacity = 1;
+            }
+            else
+            {
+                Capacity = _internalArray.Length * 2;
+            }
             Array.Resize(ref _internalArray, Capacity);
         }
         
         _internalArray[_count] = element;
         _count++;
     }
-
-    public void RemoveElement()
-    {
-        OutOfRangeChecker(_count - 1);
-        _count--;
-    }
-
-    public int GetLatestElement()
+    
+    public int Peek()
     {
         if (_count - 1 < 0)
         {
-            return 0;
+            throw new InvalidOperationException("Can not get latest element: stack is empty");
         }
         return _internalArray[_count - 1];
     }
 
-    public int GetAndRemoveLatestElement()
+    public int Pop()
     {
-        OutOfRangeChecker(_count - 1);
-        _count--;
-        return _internalArray[_count];
-    }
-
-    public override string ToString()
-    {
-        return GetLatestElement().ToString();
-    }
-
-    private void OutOfRangeChecker(int num)
-    {
-        if (num < 0)
+        if (_count - 1 < 0)
         {
-            throw new IndexOutOfRangeException();
+            throw new InvalidOperationException("Can remove elements: stack is empty");
         }
+        var tempElement = Peek();
+        _count--;
+        if (_count == _internalArray.Length / 2)
+        {
+            Capacity = _internalArray.Length / 2;
+            Array.Resize(ref _internalArray, Capacity);
+        }
+        return tempElement;
     }
 }
